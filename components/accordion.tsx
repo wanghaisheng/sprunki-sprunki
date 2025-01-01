@@ -1,29 +1,31 @@
-import React, { useState } from "react";
+import React from "react";
 
 interface AccordionProps {
   title: string;
   id: string;
+  active: boolean; // Add active to the props
+  onToggle: () => void; // Function to handle state toggle from parent
   children: React.ReactNode;
 }
 
-const Accordion: React.FC<AccordionProps> = ({ title, id, children }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleAccordion = () => {
-    setIsOpen((prev) => !prev);
-  };
-
+const Accordion: React.FC<AccordionProps> = ({
+  title,
+  id,
+  active,
+  onToggle,
+  children,
+}) => {
   return (
     <div className="border-b">
       <button
-        onClick={toggleAccordion}
+        onClick={onToggle}
         className="w-full text-left py-3 px-4 bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-none"
-        aria-expanded={isOpen}
+        aria-expanded={active}
         aria-controls={id}
       >
         <h3 className="text-lg font-semibold">{title}</h3>
       </button>
-      {isOpen && (
+      {active && (
         <div
           id={id}
           className="py-2 px-4 text-gray-600 bg-gray-50"
