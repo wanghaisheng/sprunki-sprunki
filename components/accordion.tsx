@@ -1,30 +1,36 @@
-import React, { useState } from 'react';
-import { IoIosArrowDown, IoIosArrowForward } from 'react-icons/io';
+import React, { useState } from "react";
 
-type AccordionProps = {
+interface AccordionProps {
   title: string;
+  id: string;
   children: React.ReactNode;
-};
+}
 
-const Accordion: React.FC<AccordionProps> = ({ title, children }) => {
+const Accordion: React.FC<AccordionProps> = ({ title, id, children }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleAccordion = () => {
-    setIsOpen(!isOpen);
+    setIsOpen((prev) => !prev);
   };
 
   return (
-    <div className={`border border-gray-200 rounded-md shadow-sm mb-4 transition-all duration-300 ${isOpen ? 'overflow-y-auto' : 'h-12'}`}>
-      <div
-        className="p-3 cursor-pointer bg-gray-100 text-gray-800 font-bold flex items-center"
+    <div className="border-b">
+      <button
         onClick={toggleAccordion}
+        className="w-full text-left py-3 px-4 bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-none"
+        aria-expanded={isOpen}
+        aria-controls={id}
       >
-        {isOpen ? <IoIosArrowDown className="mr-2" /> : <IoIosArrowForward className="mr-2" />}
-        <span>{title}</span>
-      </div>
+        <h3 className="text-lg font-semibold">{title}</h3>
+      </button>
       {isOpen && (
-        <div className="p-3 bg-white">
-          {children}
+        <div
+          id={id}
+          className="py-2 px-4 text-gray-600 bg-gray-50"
+          role="region"
+          aria-labelledby={id}
+        >
+          <p>{children}</p>
         </div>
       )}
     </div>
