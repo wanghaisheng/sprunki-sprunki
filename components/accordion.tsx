@@ -1,38 +1,31 @@
-import React from "react";
+// components/accordion.tsx
+import { useState } from "react";
 
 interface AccordionProps {
   title: string;
   id: string;
-  active: boolean; // Add active to the props
-  onToggle: () => void; // Function to handle state toggle from parent
+  active?: boolean;
   children: React.ReactNode;
 }
 
-const Accordion: React.FC<AccordionProps> = ({
-  title,
-  id,
-  active,
-  onToggle,
-  children,
-}) => {
+const Accordion: React.FC<AccordionProps> = ({ title, id, active = false, children }) => {
+  const [isOpen, setIsOpen] = useState(active);
+
+  const toggleAccordion = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
-    <div className="border-b">
+    <div className="accordion-item">
       <button
-        onClick={onToggle}
-        className="w-full text-left py-3 px-4 bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-none"
-        aria-expanded={active}
-        aria-controls={id}
+        className="accordion-header w-full text-left p-4 border-b-2"
+        onClick={toggleAccordion}
       >
-        <h3 className="text-lg font-semibold">{title}</h3>
+        <h3 className="font-semibold">{title}</h3>
       </button>
-      {active && (
-        <div
-          id={id}
-          className="py-2 px-4 text-gray-600 bg-gray-50"
-          role="region"
-          aria-labelledby={id}
-        >
-          <p>{children}</p>
+      {isOpen && (
+        <div id={id} className="accordion-body p-4">
+          {children}
         </div>
       )}
     </div>
